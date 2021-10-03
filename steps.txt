@@ -1,0 +1,36 @@
+backend setup:
+	- open new pycharm project (choose new environment with virtualenv option )
+	- copy all backend folders (detections, uploads, yolov4, yolov4-custom functions) 
+		you should have the following project structure:
+			PycharmProjectFolder
+				detections
+					test
+				uploads
+				yolov4
+				yolov4-customfunctions
+				
+
+	- on terminal run pip install -r requirements.txt
+	- check classes.names path file 
+	- test backend setup with the following command : python yolov4-custom-functions/detect.py --weights yolov4 --size 416 --model yolov4 --images image_path --ocr
+	- now run main.py 
+	
+frontend setup
+	- open frontend/app in vscode
+	- run yarn install in vscode terminal
+	- run yarn serve 
+
+======================================================================================================
+
+before deployment please check env variables in front end (localhost:5000=> url should come from env variables)
+before deployment please check vue build command from vue-cli
+before deployment do not forget to turn off debug mode
+
+==========================================================================================================
+
+before deployment please check env variables in backend (classes.names file path should not be hard coded)
+before deployment please check env variable back end model (in path should be in env path, weights path should also be in env variable
+before deployment do not forget to turn off debug mode
+
+==========================================================================================================   
+ 
