@@ -196,7 +196,7 @@ export default {
             email: response.data['Email'],
             website: response.data['Website'],
             adresse: response.data['Address'],
-            fix: response.data.['Fix'],
+            fix: response.data['Fix'],
             propriaitaire: response.data['Name'],
             filepath: "",
             };

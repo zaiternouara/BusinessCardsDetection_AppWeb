@@ -73,7 +73,7 @@ def upload_file():
             os.system(f'python yolov4-custom-functions/detect.py --weights yolov4 --size 416 --model yolov4 --images {UPLOAD_FOLDER}/{filename} --ocr')
             # return Response(json.dumps({"msg":"ok ", "file Name :": str(filename)}), mimetype='application/json'), 200
 
-            with open(detections / {filename} / Detection.json) as jsonFile:
+            with open('detections/ {filename}/Detection.json') as jsonFile:
                 jsonObject = json.load(jsonFile)
                 jsonFile.close()
             return Response(dumps(jsonObject), mimetype='application/json'), 200
