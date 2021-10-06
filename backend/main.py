@@ -64,16 +64,19 @@ def upload_file():
         # submit a empty part without filename
         if file.filename == '':
             flash('No selected file')
-            print("went2")
+
             return Response(json.dumps({"msg":"something went wron"}), mimetype='application/json'), 400
         if file and file.filename.split(".")[1] in ALLOWED_EXTENSIONS:
+            print("went2")
+            print("went2")
+            print("heyyyyyyyyy")
             filename = secure_filename(file.filename)
             file.save(os.path.join(UPLOAD_FOLDER, filename))
             print("went3")
             os.system(f'python yolov4-custom-functions/detect.py --weights yolov4 --size 416 --model yolov4 --images {UPLOAD_FOLDER}/{filename} --ocr')
             # return Response(json.dumps({"msg":"ok ", "file Name :": str(filename)}), mimetype='application/json'), 200
 
-            with open('detections/ {filename}/Detection.json') as jsonFile:
+            with open('detections/'+str(filename)+'/Detection.json') as jsonFile:
                 jsonObject = json.load(jsonFile)
                 jsonFile.close()
             return Response(dumps(jsonObject), mimetype='application/json'), 200
