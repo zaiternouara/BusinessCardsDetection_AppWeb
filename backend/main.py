@@ -58,7 +58,7 @@ def upload_file():
             flash('No file part')
             print("went1")
             return Response(json.dumps({"msg":"something went wron"}), mimetype='application/json'), 400
-
+        print("1")
         file = request.files['file']
         # if user does not select file, browser also
         # submit a empty part without filename
@@ -67,17 +67,19 @@ def upload_file():
 
             return Response(json.dumps({"msg":"something went wron"}), mimetype='application/json'), 400
         if file and file.filename.split(".")[1] in ALLOWED_EXTENSIONS:
-            print("went2")
-            print("went2")
-            print("heyyyyyyyyy")
+            print("went21")
+
+
             filename = secure_filename(file.filename)
+            print("heyyyyyyyyy")
             file.save(os.path.join(UPLOAD_FOLDER, filename))
             print("went3")
             os.system(f'python yolov4-custom-functions/detect.py --weights yolov4 --size 416 --model yolov4 --images {UPLOAD_FOLDER}/{filename} --ocr')
             # return Response(json.dumps({"msg":"ok ", "file Name :": str(filename)}), mimetype='application/json'), 200
-
-            with open('detections/'+str(filename)+'/Detection.json') as jsonFile:
+            print("wen")
+            with open('backend/detections/'+str(filename)+'/Detection.json') as jsonFile:
                 jsonObject = json.load(jsonFile)
+                print("went22222")
                 jsonFile.close()
             return Response(dumps(jsonObject), mimetype='application/json'), 200
 if __name__ == '__main__':
