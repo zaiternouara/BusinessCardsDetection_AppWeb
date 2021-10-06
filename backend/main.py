@@ -10,6 +10,7 @@ from flask_restful import Api
 from werkzeug.utils import secure_filename
 from pymongo import MongoClient
 from flask_cors import CORS, cross_origin
+import json
 
 app = Flask(__name__)
 api = Api(app)
@@ -70,7 +71,11 @@ def upload_file():
             file.save(os.path.join(UPLOAD_FOLDER, filename))
             print("went3")
             os.system(f'python yolov4-custom-functions/detect.py --weights yolov4 --size 416 --model yolov4 --images {UPLOAD_FOLDER}/{filename} --ocr')
-            return Response(json.dumps({"msg":"ok ", "file Name :": str(filename)}), mimetype='application/json'), 200
+            # return Response(json.dumps({"msg":"ok ", "file Name :": str(filename)}), mimetype='application/json'), 200
 
+            with open(detections / {filename} / Detection.json) as jsonFile:
+                jsonObject = json.load(jsonFile)
+                jsonFile.close()
+            return Response(dumps(jsonObject), mimetype='application/json'), 200
 if __name__ == '__main__':
     app.run(debug=True)

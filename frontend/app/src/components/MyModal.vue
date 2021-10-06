@@ -188,8 +188,18 @@ export default {
           propriaitaire: this.current.proprio,
         })
         .then((response) => {
-          console.log(response);
-          this.$emit("inserted");
+          /**console.log(response);**/
+          this.current = {
+            company_name: response.data['Company'],
+            phone_number: response.data['Mob'],
+            fax: response.data['Fax'],
+            email: response.data['Email'],
+            website: response.data['Website'],
+            adresse: response.data['Address'],
+            fix: response.data.['Fix'],
+            propriaitaire: response.data['Name'],
+            filepath: "",
+            };
         })
         .catch((error) => {
           console.log(error);

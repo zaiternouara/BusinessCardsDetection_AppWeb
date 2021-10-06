@@ -64,7 +64,7 @@ def ocr(img, data, path):
     boxes, scores, classes, num_objects = data
     class_names = read_class_names(cfg.YOLO.CLASSES)
 
-    pth = 'Detection.txt'
+    pth = 'Detection.json'
     pth = os.path.join(path, pth)
     print(pth)
     print(path)
@@ -99,7 +99,7 @@ def ocr(img, data, path):
                 #print(rs)
         except:
             text = None
-    with open(pth+'result.json', 'w') as fp:
+    with open(pth, 'w') as fp:
         json.dump(rs, fp)
     # close file
 
