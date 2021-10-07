@@ -80,7 +80,7 @@ def upload_file():
 
 
 
-            os.system(f'backend/python yolov4-custom-functions/detect.py --weights yolov4 --size 416 --model backend/yolov4 --images os.path.join(UPLOAD_FOLDER, filename) --ocr')
+            os.system(f'python yolov4-custom-functions/detect.py --weights yolov4 --size 416 --model backend/yolov4 --images os.path.join(UPLOAD_FOLDER, filename) --ocr')
             # return Response(json.dumps({"msg":"ok ", "file Name :": str(filename)}), mimetype='application/json'), 200
             print("wen")
 

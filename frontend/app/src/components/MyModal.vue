@@ -23,28 +23,28 @@
               <v-row>
                 <v-col cols="12" sm="6" md="4">
                   <v-text-field
-                    label="Nom Company"
+                    label="Société *"
                     required
                     v-model="current.company_name"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="4">
                   <v-text-field
-                    label="Fix"
+                    label="Fix *"
                     required
                     v-model="current.fix"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="4">
                   <v-text-field
-                    label="Fax"
+                    label="Fax *"
                     required
                     v-model="current.fax"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6">
                   <v-text-field
-                    label="Mobile*"
+                    label="Mobile *"
                     required
                     v-model="current.phone_number"
                   ></v-text-field>
@@ -58,21 +58,21 @@
                 </v-col>
                 <v-col cols="12" sm="6">
                   <v-text-field
-                    label="Propriétaire de la carte"
+                    label="Propriétaire de la carte *"
                     required
                     v-model="current.proprio"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6">
                   <v-text-field
-                    label="Website"
+                    label="Site web *"
                     required
                     v-model="current.website"
                   ></v-text-field>
                 </v-col>
                 <v-col>
                   <v-textarea
-                    label="Adresse "
+                    label="Adresse *"
                     required
                     v-model="current.adresse"
                   >
@@ -84,7 +84,7 @@
                   <v-file-input
                     chips
                     accept="image/*"
-                    label="File input"
+                    label="Insérer la carte de visite ici"
                     v-model="current.filepath"
                   ></v-file-input>
                 </v-col>
@@ -93,14 +93,16 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="close">
-              Close
-            </v-btn>
-            <v-btn color="blue darken-1" text @click="click">
-              Save
-            </v-btn>
             <v-btn color="blue darken-1" text @click="check">
-              check
+              DETÉCTER
+            </v-btn>
+
+            <v-btn color="blue darken-1" text @click="click">
+              Entegister
+            </v-btn>
+
+            <v-btn color="blue darken-1" text @click="close">
+              Fermer
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -116,7 +118,7 @@ export default {
   props: {
     title: {
       type: String,
-      default: "Ajouter Une Company",
+      default: "Ajouter un contact",
     },
     current: {
       company_name: "",

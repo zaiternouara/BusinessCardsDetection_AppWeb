@@ -1,7 +1,9 @@
 <template>
   <v-app>
     <v-app-bar app>
-      <v-toolbar-title>{{ this.Company }}</v-toolbar-title>
+      <v-toolbar-title>
+      <img src="./assets/Company.png">
+      </v-toolbar-title>
     </v-app-bar>
 
     <v-main>
@@ -24,8 +26,16 @@ export default {
   },
   data: function() {
     return {
-      Company: "Altius",
+      Company: "ALTIUS SERVICES",
     };
   },
+
 };
 </script>
+<style lang="css">
+  img {
+     width:18%;
+     height:70%;
+
+  }
+</style>

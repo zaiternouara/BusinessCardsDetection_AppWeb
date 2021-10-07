@@ -2,14 +2,14 @@
   <v-data-table :headers="headers" :items="items" class="elevation-1">
     <template v-slot:top>
       <v-toolbar flat>
-        <v-toolbar-title>Liste Des Companies</v-toolbar-title>
+        <v-toolbar-title>Répertoire de contacts</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
         <MyModal :current="current"  />
         <v-dialog v-model="dialogDelete" max-width="500px">
           <v-card>
             <v-card-title
-              >Vous Voulez Vraiment Enlever Cet Elément ?</v-card-title
+              >Voulez-vous vraiment supprimer ce contact ?</v-card-title
             >
             <v-card-actions>
               <v-spacer></v-spacer>
@@ -44,7 +44,7 @@ export default {
 
     headers: [
       {
-        text: "Nom Company",
+        text: "Société",
         align: "start",
         sortable: false,
         value: "company_name",
@@ -58,8 +58,8 @@ export default {
       { text: "Fix", value: "fix" },
       { text: "Fax", value: "fax" },
       { text: "Mobile", value: "phone_number" },
-      { text: "Website", value: "website" },
-      { text: "actions", value: "actions" },
+      { text: "Site web", value: "website" },
+      { text: "Actions", value: "actions" },
     ],
     items: [],
     current: {
