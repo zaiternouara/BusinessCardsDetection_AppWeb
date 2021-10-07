@@ -59,7 +59,7 @@ Jinja2==3.0.1
 keras==2.6.0
 Keras-Preprocessing==1.1.2
 Markdown==3.3.4
-MarkupSafe==2.0.1
+c==0.1.0
 mimerender==0.6.0
 mongoengine==0.23.1
 numpy==1.21.2

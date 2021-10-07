@@ -29,12 +29,15 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 app.secret_key=SECRET_KEY
 
 @app.route('/all', methods=['GET'])
+@cross_origin(supports_credentials=True)
 def listCompanies():
     companies = DB_INSTANCE[COLLECTION_NAME].find()
     comps = list(companies)
+
     return Response(dumps(comps), mimetype='application/json'), 200
 
 @app.route('/add', methods=['POST'])
+@cross_origin(supports_credentials=True)
 def addCompany():
 
     inserted = DB_INSTANCE[COLLECTION_NAME].insert_one(request.json).inserted_id
@@ -49,7 +52,8 @@ def removeCompany(id):
     return Response(dumps({"Deleted_count":removed}), mimetype='application/json'), 200
 
 
-@app.route('/upload', methods=["GET",'POST'])
+@app.route('/upload', methods=['GET','POST'])
+@cross_origin(supports_credentials=True)
 def upload_file():
     if request.method == 'POST':
         # check if the post request has the file part
@@ -71,13 +75,17 @@ def upload_file():
 
 
             filename = secure_filename(file.filename)
-            print("heyyyyyyyyy")
+
             file.save(os.path.join(UPLOAD_FOLDER, filename))
             print("went3")
+            print(UPLOAD_FOLDER)
+            print(filename)
             os.system(f'python yolov4-custom-functions/detect.py --weights yolov4 --size 416 --model yolov4 --images {UPLOAD_FOLDER}/{filename} --ocr')
             # return Response(json.dumps({"msg":"ok ", "file Name :": str(filename)}), mimetype='application/json'), 200
             print("wen")
-            with open('backend/detections/'+str(filename)+'/Detection.json') as jsonFile:
+
+            fil, file_extension = os.path.splitext(str(filename))
+            with open('backend/detections/'+fil+'/Detection.json') as jsonFile:
                 jsonObject = json.load(jsonFile)
                 print("went22222")
                 jsonFile.close()
