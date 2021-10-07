@@ -1,5 +1,7 @@
 import os
 # comment out below line to enable tensorflow outputs
+from tensorflow.python.autograph.pyct import cfg
+
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import tensorflow as tf
 physical_devices = tf.config.experimental.list_physical_devices('GPU')

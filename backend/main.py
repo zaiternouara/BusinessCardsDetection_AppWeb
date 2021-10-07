@@ -13,21 +13,21 @@ from flask_cors import CORS, cross_origin
 import json
 
 app = Flask(__name__)
-CORS(app)
 api = Api(app)
 load_dotenv()
 app.config['SESSION_TYPE'] = 'filesystem'
-SECRET_KEY= os.getenv("SECRET_KEY")
-DATABASE_URL=os.getenv("DATABASE_URL")
-UPLOAD_FOLDER=os.getenv("UPLOAD_FOLDER")
+SECRET_KEY = os.getenv("SECRET_KEY")
+DATABASE_URL = os.getenv("DATABASE_URL")
+UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER")
 ALLOWED_EXTENSIONS = set(os.getenv("ALLOWED_EXTENSIONS").split(","))
-DB_NAME=os.getenv("DB_NAME")
-client =MongoClient(DATABASE_URL)
+DB_NAME = os.getenv("DB_NAME")
+client = MongoClient(DATABASE_URL)
 DB_INSTANCE = client[DB_NAME]
-COLLECTION_NAME=os.getenv("COLLECTION_NAME")
+COLLECTION_NAME = os.getenv("COLLECTION_NAME")
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
-app.secret_key=SECRET_KEY
+app.secret_key = SECRET_KEY
+
 
 @app.route('/all', methods=['GET'])
 @cross_origin(supports_credentials=True)
@@ -37,58 +37,66 @@ def listCompanies():
 
     return Response(dumps(comps), mimetype='application/json'), 200
 
+
 @app.route('/add', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def addCompany():
-
     inserted = DB_INSTANCE[COLLECTION_NAME].insert_one(request.json).inserted_id
-    return Response(dumps({"success ":inserted}), mimetype='application/json'), 200
+    return Response(dumps({"success ": inserted}), mimetype='application/json'), 200
 
 
 @app.route('/remove/<id>', methods=['DELETE'])
 def removeCompany(id):
+    a = ObjectId(request.data.decode("UTF-8"))
+    removed = DB_INSTANCE[COLLECTION_NAME].delete_one({"_id": a}).deleted_count
+    return Response(dumps({"Deleted_count": removed}), mimetype='application/json'), 200
 
-    a= ObjectId(request.data.decode("UTF-8"))
-    removed = DB_INSTANCE[COLLECTION_NAME].delete_one({"_id":a}).deleted_count
-    return Response(dumps({"Deleted_count":removed}), mimetype='application/json'), 200
 
-
-@app.route('/upload', methods=['GET','POST'])
+@app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
         # check if the post request has the file part
-        print(request.files)
+
         if 'file' not in request.files:
             flash('No file part')
             print("went1")
-            return Response(json.dumps({"msg":"something went wron"}), mimetype='application/json'), 400
-        print("1")
+            return Response(json.dumps({"msg": "something went wrong"}), mimetype='application/json'), 400
+
         file = request.files['file']
         # if user does not select file, browser also
         # submit a empty part without filename
         if file.filename == '':
             flash('No selected file')
 
-            return Response(json.dumps({"msg":"something went wron"}), mimetype='application/json'), 400
+            return Response(json.dumps({"msg": "something went wron"}), mimetype='application/json'), 400
         if file and file.filename.split(".")[1] in ALLOWED_EXTENSIONS:
-            print("went21")
-
 
             filename = secure_filename(file.filename)
 
+
             file.save(os.path.join(UPLOAD_FOLDER, filename))
-            print("went3")
-            print(UPLOAD_FOLDER)
-            print(filename)
-            os.system(f'python yolov4-custom-functions/detect.py --weights yolov4 --size 416 --model yolov4 --images {UPLOAD_FOLDER}/{filename} --ocr')
+
+            print(os.path.join(UPLOAD_FOLDER, filename))
+
+
+
+            os.system(f'backend/python yolov4-custom-functions/detect.py --weights yolov4 --size 416 --model backend/yolov4 --images os.path.join(UPLOAD_FOLDER, filename) --ocr')
             # return Response(json.dumps({"msg":"ok ", "file Name :": str(filename)}), mimetype='application/json'), 200
             print("wen")
 
+
             fil, file_extension = os.path.splitext(str(filename))
-            with open('backend/detections/'+fil+'/Detection.json') as jsonFile:
-                jsonObject = json.load(jsonFile)
-                print("went22222")
+            test = r"C:\Users\Z T R\PycharmProjects\BusinessCardsDetection_AppWeb\backend\detections"
+            print(os.path.join(test, fil))
+            f = 'Detection.json'
+            j = os.path.join(test, fil)
+            print(os.path.join(j, f))
+            with open(os.path.join(j, f)) as jsonFile:
+                jsonObject: object = json.load(jsonFile)
+
                 jsonFile.close()
             return Response(dumps(jsonObject), mimetype='application/json'), 200
+
+
 if __name__ == '__main__':
     app.run(debug=True)
