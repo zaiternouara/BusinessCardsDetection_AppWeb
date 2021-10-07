@@ -13,6 +13,7 @@ from flask_cors import CORS, cross_origin
 import json
 
 app = Flask(__name__)
+CORS(app)
 api = Api(app)
 load_dotenv()
 app.config['SESSION_TYPE'] = 'filesystem'
@@ -53,7 +54,6 @@ def removeCompany(id):
 
 
 @app.route('/upload', methods=['GET','POST'])
-@cross_origin(supports_credentials=True)
 def upload_file():
     if request.method == 'POST':
         # check if the post request has the file part
