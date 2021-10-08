@@ -1,6 +1,8 @@
 import base64
 import json
 import os
+import subprocess
+
 from bson import ObjectId, binary
 from bson.json_util import dumps
 
@@ -80,7 +82,7 @@ def upload_file():
 
 
 
-            os.system(f'python yolov4-custom-functions/detect.py --weights yolov4 --size 416 --model backend/yolov4 --images os.path.join(UPLOAD_FOLDER, filename) --ocr')
+            os.system(f'python yolov4-custom-functions/detect.py --weights yolov4 --size 416 --model yolov4 --images uploads/{filename} --ocr')
             # return Response(json.dumps({"msg":"ok ", "file Name :": str(filename)}), mimetype='application/json'), 200
             print("wen")
 

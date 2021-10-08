@@ -12,7 +12,7 @@ backend setup:
 
 	- on terminal run pip install -r requirements.txt
 	- check classes.names path file 
-	- test backend setup with the following command : python yolov4-custom-functions/detect.py --weights yolov4 --size 416 --model yolov4 --images backend/uploads/test.jpg --ocr
+	- test backend setup with the following command : python yolov4-custom-functions/detect.py --weights yolov4 --size 416 --model yolov4 --images uploads/test.jpg --ocr
 	- now run main.py 
 	
 frontend setup

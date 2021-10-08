@@ -13,15 +13,16 @@
             >
             <v-card-actions>
               <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+                >SUPPRIMER</v-btn
+              >
               <v-btn
                 color="blue darken-1"
                 text
                 @click="dialogDelete = !dialogDelete"
-                >Cancel</v-btn
+                >ANNULER</v-btn
               >
-              <v-btn color="blue darken-1" text @click="deleteItemConfirm"
-                >OK</v-btn
-              >
+
               <v-spacer></v-spacer>
             </v-card-actions>
           </v-card>
