@@ -66,7 +66,7 @@
                 </v-col>
                 <v-col cols="12" sm="6">
                   <v-text-field
-                    label="Email*"
+                    label="Email *"
                     required
                     v-model="current.email"
                   ></v-text-field>

@@ -1,19 +1,20 @@
-import base64
-import json
-import os
-import subprocess
 
+import os
+import h5py
+import numpy as np
 from bson import ObjectId, binary
 from bson.json_util import dumps
 
 from dotenv import load_dotenv
 from flask import Flask, flash, request, redirect, url_for, Response
 from flask_restful import Api
+from matplotlib import pyplot as plt
 from werkzeug.utils import secure_filename
 from pymongo import MongoClient
 from flask_cors import CORS, cross_origin
 import json
-
+import pixellib
+from pixellib.instance import custom_segmentation
 app = Flask(__name__)
 api = Api(app)
 load_dotenv()
@@ -29,8 +30,9 @@ COLLECTION_NAME = os.getenv("COLLECTION_NAME")
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.secret_key = SECRET_KEY
-
-
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+model_path  = os.getenv("model_path ")
 @app.route('/all', methods=['GET'])
 @cross_origin(supports_credentials=True)
 def listCompanies():
@@ -135,11 +137,33 @@ def upload_file():
 
             return Response(json.dumps({"msg": "something went wron"}), mimetype='application/json'), 400
         if file and file.filename.split(".")[1] in ALLOWED_EXTENSIONS:
+
             filename = secure_filename(file.filename)
 
             file.save(os.path.join(UPLOAD_FOLDER, filename))
 
             print(os.path.join(UPLOAD_FOLDER, filename))
+
+            """image_path = os.path.join(UPLOAD_FOLDER, filename)
+            output_path = os.path.join(UPLOAD_FOLDER, filename)
+            print({filename})
+            print(output_path)
+            segment_image = custom_segmentation()
+            segment_image.inferConfig(num_classes=1, class_names=["BG", "card"])
+            segment_image.load_model(model_path)
+            print("1")
+            segmask, output = segment_image.segmentImage(image_path, extract_segmented_objects=True, show_bboxes=True, output_image_name=output_path)
+            sg = segmask['extracted_objects'].astype('int')
+            print("2")
+            a3 = np.array([sg], dtype=np.int32)
+            print(a3.shape)
+            if (a3.shape[1] > 0):
+                # print(a3.shape[1])
+                newarr = a3.reshape(a3.shape[2], a3.shape[3], a3.shape[4])
+                newarr = newarr.astype(np.uint8)
+                print(newarr.shape)
+                print("13")
+                plt.imsave("uploads/{filename}", newarr)"""
 
             os.system(
                 f'python yolov4-custom-functions/detect.py --weights yolov4 --size 416 --model yolov4 --images uploads/{filename} --ocr')
