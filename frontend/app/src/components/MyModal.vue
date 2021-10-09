@@ -60,7 +60,7 @@
                   <v-text-field
                     label="Propriétaire de la carte *"
                     required
-                    v-model="current.proprio"
+                    v-model="current. propriaitaire"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6">
@@ -98,11 +98,11 @@
             </v-btn>
 
             <v-btn color="blue darken-1" text @click="click">
-              Entegister
+              ENREGISTRER
             </v-btn>
 
             <v-btn color="blue darken-1" text @click="close">
-              Fermer
+              FERMER
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -112,7 +112,7 @@
 </template>
 <script>
 import axios from "axios";
-import { mapState } from "vuex";
+import {mapMutations, mapState} from "vuex";
 export default {
   name: "MyModal",
   props: {
@@ -140,6 +140,11 @@ export default {
   },
 
   methods: {
+    ...mapMutations(["changeValue"]),
+    reload() {
+      console.log("event catch success");
+      this.$forceUpdate();
+    },
     check() {
        let data = new FormData()
        data.append("file",this.current.filepath)

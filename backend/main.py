@@ -47,6 +47,69 @@ def addCompany():
     return Response(dumps({"success ": inserted}), mimetype='application/json'), 200
 
 
+@app.route('/update/<id>', methods=['PUT'])
+@cross_origin(supports_credentials=True)
+def updateCompany(id):
+    P = request.data.decode("UTF-8")
+
+    body = request.json
+    if('company_name' in body):
+             company_name = body['company_name']
+    else:
+         company_name=''
+
+    if ('phone_number' in body):
+        phone_number= body['phone_number']
+    else:
+        phone_number = ''
+
+    if ('fax' in body):
+        fax = body['fax']
+    else:
+        fax = ''
+
+    if ('email' in body):
+        email= body['email']
+    else:
+        email= ''
+
+    if ('website' in body):
+        website= body['website']
+    else:
+        website = ''
+
+    if ('adresse' in body):
+        adresse= body['adresse']
+    else:
+        adresse = ''
+
+    if ('fix' in body):
+        fix= body['fix']
+    else:
+        fix = ''
+
+    if ('propriaitaire' in body):
+        propriaitaire= body['propriaitaire']
+    else:
+        propriaitaire= ''
+
+
+
+    inserted = DB_INSTANCE[COLLECTION_NAME].update({"_id": ObjectId(id)}, {
+                "$set": {
+                    "company_name":company_name,
+                    "phone_number":phone_number,
+                    "fax": fax,
+                    "email": email,
+                    "website": website,
+                    "adresse": adresse,
+                    "fix": fix,
+                    "propriaitaire":propriaitaire,
+                }
+            })
+    return Response(dumps({"success ": inserted}), mimetype='application/json'), 200
+
+
 @app.route('/remove/<id>', methods=['DELETE'])
 def removeCompany(id):
     a = ObjectId(request.data.decode("UTF-8"))
@@ -72,20 +135,16 @@ def upload_file():
 
             return Response(json.dumps({"msg": "something went wron"}), mimetype='application/json'), 400
         if file and file.filename.split(".")[1] in ALLOWED_EXTENSIONS:
-
             filename = secure_filename(file.filename)
-
 
             file.save(os.path.join(UPLOAD_FOLDER, filename))
 
             print(os.path.join(UPLOAD_FOLDER, filename))
 
-
-
-            os.system(f'python yolov4-custom-functions/detect.py --weights yolov4 --size 416 --model yolov4 --images uploads/{filename} --ocr')
+            os.system(
+                f'python yolov4-custom-functions/detect.py --weights yolov4 --size 416 --model yolov4 --images uploads/{filename} --ocr')
             # return Response(json.dumps({"msg":"ok ", "file Name :": str(filename)}), mimetype='application/json'), 200
             print("wen")
-
 
             fil, file_extension = os.path.splitext(str(filename))
             test = r"C:\Users\Z T R\PycharmProjects\BusinessCardsDetection_AppWeb\backend\detections"
