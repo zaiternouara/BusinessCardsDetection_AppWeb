@@ -50,7 +50,7 @@ def crop_objects(img, data, path, allowed_classes):
             # get box coords
             xmin, ymin, xmax, ymax = boxes[i]
             # crop detection from image (take an additional 5 pixels around all edges)
-            cropped_img = img[int(ymin)-5:int(ymax)+5, int(xmin)-5:int(xmax)+5]
+            cropped_img = img[int(ymin)-2:int(ymax)+2, int(xmin)-2:int(xmax)+2]
             # construct image name and join it to path for saving crop properly
             img_name = class_name + '_' + str(counts[class_name]) + '.png'
             img_path = os.path.join(path, img_name )
@@ -80,14 +80,23 @@ def ocr(img, data, path):
         xmin, ymin, xmax, ymax = boxes[i]
         # get the subimage that makes up the bounded region and take an additional 5 pixels on each side
         box = img[int(ymin) - 2:int(ymax) + 2, int(xmin) - 2:int(xmax) + 2]
+        #cv2.imwrite('detection_box' + class_name + "" + str(class_index) + '.png', box)
+
+        #sans_Deux = img[int(ymin):int(ymax) , int(xmin) :int(xmax) ]
+        #cv2.imwrite('detection_sans_Deux' + class_name + "" + str(class_index) + '.png', sans_Deux)
         # grayscale region within bounding box
         gray = cv2.cvtColor(box, cv2.COLOR_RGB2GRAY)
+        #cv2.imwrite('detection_gray' + class_name + "" + str(class_index) + '.png', gray)
+
         # threshold the image using Otsus method to preprocess for tesseract
         thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
+        #cv2.imwrite('detection_thresh' + class_name + "" + str(class_index) + '.png', thresh)
         # perform a median blur to smooth image slightly
         blur = cv2.medianBlur(thresh, 3)
+        #cv2.imwrite('detection_blur' + class_name + "" + str(class_index) + '.png', blur)
         # resize image to double the original size as tesseract does better with certain text size
         blur = cv2.resize(blur, None, fx=2, fy=2, interpolation=cv2.INTER_CUBIC)
+        #cv2.imwrite('detection_blur_resize' + class_name + "" + str(class_index) + '.png', blur)
         # run tesseract and convert image text to string
         text = pytesseract.image_to_string(blur, config='--psm 11 --oem 3')
         try:
